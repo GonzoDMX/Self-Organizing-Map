@@ -1,6 +1,10 @@
 /*
-*
-*	Functions for performing operations on the SOM Map
+*	SOMAP_OPERATIONS
+*	Created by: Andrew O'Shei
+*	Date: Nov 2, 2021
+*	
+*	Info:
+*	Functions for manipulating the SOM Node Network
 *
 */
 
@@ -122,3 +126,23 @@ double get_distance(size_t *pos, size_t *bmu_pos)
 }
 
 
+void reset_feature_map(SOMap *m)
+{
+	for (size_t i = 0; i < m->y; i++)
+	{
+		for (size_t j = 0; j < m->x; j++)
+		{
+			m->nodes[i][j].color = 0;
+		}
+	}
+}
+
+void populate_feature_map(Dataset *d, SOMap *m)
+{
+	for (size_t i = 0; i < d->sample_size; i++)
+	{
+		size_t *pos;
+		pos = get_best_match_unit(d, m, i);
+		m->nodes[pos[1]][pos[0]].color += 1;
+	}
+}

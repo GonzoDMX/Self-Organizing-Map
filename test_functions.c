@@ -1,8 +1,13 @@
 /*
-*
-*	A series of functions for printing SOM Data Structures
+*	TEST_FUNCTIONS
+*	Created by: Andrew O'Shei
+*	Date: Nov 1, 2021
+*	
+*	Info:
+*	Series of helper functions for printing data structures in terminal
 *
 */
+
 
 
 #include <stdio.h>
@@ -104,6 +109,23 @@ void print_size_t_array(size_t *o, size_t s)
 		}
 	}
 	printf("\n");
+}
+
+
+void print_feature_map(SOMap *m)
+{
+	for (size_t i = 0; i < m->y; i++)
+	{
+		printf(" | ");
+		for (size_t j = 0; j < m->x; j++)
+		{
+			size_t tmp = m->nodes[i][j].color;
+			if (tmp > 99) 		{ printf("%ld | ", tmp);  }
+			else if (tmp > 9) 	{ printf(" %ld | ", tmp); }
+			else 				{ printf("  %ld | ", tmp);}
+		}
+		printf("\n");
+	}
 }
 
 

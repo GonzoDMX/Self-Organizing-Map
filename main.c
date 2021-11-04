@@ -1,7 +1,11 @@
 /*
-*
-*	Main Program function for constructing a Self Organizing Map
+*	MAIN
 *	Created by: Andrew O'Shei
+*	Date: Nov 1, 2021
+*	
+*	Info:
+*	Main program function for Self-Organizing Map Program
+*
 */
 
 
@@ -57,7 +61,13 @@ int main(int argc, char **argv)
 	//print_size_t_array(order, d.sample_size);
 	//press_enter_to_continue();
 	
-	// Loop through Iterations
+	printf("\nPrint feature map (before training):\n");
+	populate_feature_map(&d, &m);
+	print_feature_map(&m);	
+	
+	press_enter_to_continue();
+	
+	// Train the SOM Here
 	printf("\nStarting training of SOM\n");
 	for (size_t i = 0; i < iter; i++)
 	{
@@ -81,26 +91,12 @@ int main(int argc, char **argv)
 	// pos = get_best_match_unit(&d, &m, order[0]);
 	// printf("\nBest Match Unit: { %ld, %ld }\n", pos[0], pos[1]);
 	
-	printf("\nPrint feature map:\n");
-	for (size_t i = 0; i < d.sample_size; i++)
-	{
-		size_t *pos;
-		pos = get_best_match_unit(&d, &m, i);
-		m.nodes[pos[1]][pos[0]].color += 1;
-	}
+	// Reset color value
+	reset_feature_map(&m);
 	
-	for (size_t i = 0; i < m.y; i++)
-	{
-		printf(" | ");
-		for (size_t j = 0; j < m.x; j++)
-		{
-			size_t tmp = m.nodes[i][j].color;
-			if (tmp > 99) 		{ printf("%ld | ", tmp);  }
-			else if (tmp > 9) 	{ printf(" %ld | ", tmp); }
-			else 				{ printf("  %ld | ", tmp);}
-		}
-		printf("\n");
-	}
+	printf("\nPrint feature map:\n");
+	populate_feature_map(&d, &m);
+	print_feature_map(&m);
 }
 
 

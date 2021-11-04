@@ -1,7 +1,10 @@
 /*
-*
-*	Header file for dataset_operations.c
-*	Operations for manipulating the dataset
+*	DATASET_OPERATIONS_H_
+*	Created by: Andrew O'Shei
+*	Date: Nov 1, 2021
+*	
+*	Info:
+*	Header file for DATASET_OPERATIONS
 *
 */
 

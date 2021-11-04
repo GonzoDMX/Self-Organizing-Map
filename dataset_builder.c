@@ -1,5 +1,9 @@
 /*
-*
+*	DATASET_BUILDER
+*	Created by: Andrew O'Shei
+*	Date: Nov 1, 2021
+*	
+*	Info:
 *	Builds a dataset struct from the dataset file passed to the constructor function
 *
 */

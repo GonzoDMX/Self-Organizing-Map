@@ -1,6 +1,10 @@
 /*
-*
-*	Header file for SOM Operations module
+*	SOMAP_OPERATIONS_H_
+*	Created by: Andrew O'Shei
+*	Date: Nov 2, 2021
+*	
+*	Info:
+*	Header file for SOMAP_OPERATIONS
 *
 */
 
@@ -22,5 +26,9 @@ double neighborhood_func(size_t *pos, size_t *bmu_pos, size_t t, size_t t_max);
 double learning_rate(size_t t, size_t t_max);
 
 double get_distance(size_t *pos, size_t *bmu_pos);
+
+void reset_feature_map(SOMap *m);
+
+void populate_feature_map(Dataset *d, SOMap *m);
 
 #endif // SOMAP_OPERATIONS_H_

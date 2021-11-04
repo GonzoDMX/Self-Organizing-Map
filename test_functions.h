@@ -1,7 +1,10 @@
 /*
-*
-*	Header file for test_functions.c
-*	A collection of functions for printing data structures for SOM
+*	TEST_FUNCTIONS_H_
+*	Created by: Andrew O'Shei
+*	Date: Nov 1, 2021
+*	
+*	Info:
+*	Header file for TEST_FUNCTIONS
 *
 */
 
@@ -23,6 +26,8 @@ void print_max_values(Dataset *d);
 void print_node_map(SOMap *m);
 
 void print_size_t_array(size_t *o, size_t s);
+
+void print_feature_map(SOMap *m);
 
 void press_enter_to_continue();
 

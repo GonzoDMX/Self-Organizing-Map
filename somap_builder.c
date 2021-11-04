@@ -1,6 +1,10 @@
 /*
-*
-*	Functions for constructing the SOM Node Map
+*	SOMAP_BUILDER
+*	Created by: Andrew O'Shei
+*	Date: Nov 2, 2021
+*	
+*	Info:
+*	Functions for building an SOM Node Network
 *
 */
 

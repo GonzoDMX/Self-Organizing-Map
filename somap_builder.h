@@ -1,6 +1,10 @@
 /*
-*
-*
+*	SOMAP_BUILDER_H_
+*	Created by: Andrew O'Shei
+*	Date: Nov 2, 2021
+*	
+*	Info:
+*	Header file for SOMAP_BUILDER
 *
 */
 

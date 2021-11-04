@@ -1,8 +1,13 @@
 /*
-*
-*	Operations for manipulating the dataset
+*	DATASET_OPERATIONS
+*	Created by: Andrew O'Shei
+*	Date: Nov 1, 2021
+*	
+*	Info:
+*	A series of functions for manipulating the Dataset Struct
 *
 */
+
 
 #include <stdio.h>
 #include <stdlib.h>
