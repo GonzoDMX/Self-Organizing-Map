@@ -13,4 +13,4 @@ make
 ```
 
 ### Note:
-Feature maps are simply a distribution of Best Match Units. The node of the Best Match Unit is incremented for each Dataset vector that matches with it.
+The feature maps created by this program are simply a distribution of Best Match Units displayed in a table. The node of the Best Match Unit is incremented for each vector in the Dataset that matches with it.
