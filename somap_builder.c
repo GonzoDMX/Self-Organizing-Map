@@ -14,14 +14,19 @@
 #include <stdlib.h>
 #include <strings.h>
 #include <time.h>
+#include <math.h>
 #include "somap_builder.h"
 
 
-SOMap build_som(size_t v_size)
+SOMap build_som(size_t v_size, size_t s_size)
 {
 	SOMap m;
+	// Set Vector Size
 	m.v = v_size;
-	get_map_dimensions(&m);
+	
+	// Get dimensions of SOMap
+	set_map_dimensions(&m, s_size);
+	
 	srand(time(NULL));
 	m.nodes = (Node**)malloc(sizeof(Node) * m.y);
 	for (int i = 0; i < m.y; i++)
@@ -42,29 +47,35 @@ SOMap build_som(size_t v_size)
 }
 
 
-void get_map_dimensions(SOMap *m)
+// Set SOMap Dimensions automatically based on number of nodes
+void set_map_dimensions(SOMap *m, size_t sample_size)
 {
 	size_t x, y, n;
+	n = 5 * sqrt(sample_size);
+	x = sqrt(n);
 	while(1)
 	{
-		printf("\nWhat is the X-size (width) of your Self-Organizing Map?\n");
-		scanf("%zu", &x);
-		printf("What is the Y-size (height) of your Self-Organizing Map?\n");
-		scanf("%zu", &y);
-		printf("\n\nX: %ld | Y: %ld\n", x, y);
-		if (x > 1 && y > 1)
+		if(n % x == 0)
 		{
-			getchar();
-			n = x * y;
-			printf("Initializing a (%ld, %ld) Self-Organizing Map with %ld nodes.\n", x, y, n);
-			m->x = x;
-			m->y = y;
-			m->node_size = n;
-			break;
+			y = n / x;
+			if(y > 4 || x == y)
+			{
+				break;
+			}
+			x = sqrt(--n);
 		}
-		printf("\nERROR: X-Size and Y-Size must be whole numbers greater than 1.\n");
+		else
+		{
+			x++;
+		}
 	}
+	m->x = x;
+	m->y = y;
+	m->node_size = n;
+	printf("Number of Nodes: %ld\n", n);
+	printf("x: %ld | y: %ld\n", x, y);
 }
+
 
 // Used for building random vectors
 double *get_random_vector(size_t v_size)

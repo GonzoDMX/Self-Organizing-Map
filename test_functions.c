@@ -29,8 +29,9 @@ void print_dataset(Dataset *d)
 		else 				  { printf("     %d: | ", i+1); }
 		for (int j = 0; j < d->vector_size; j++)
 		{
-			printf("%lf | ", d->data[i][j]);
+			printf("%lf | ", d->vector[i].data[j]);
 		}
+		printf("Color: %d", d->vector[i].color);
 		printf("\n");
 	}
 }

@@ -39,20 +39,24 @@ int main(int argc, char **argv)
 	print_max_values(&d);
 	press_enter_to_continue();
 
+	
 	// Normalize the Data in Dataset	
 	normalize_dataset(&d);
 	print_dataset(&d);
 	press_enter_to_continue();
 	
+	
 	// Build a Node Map Initialized to random values
-	SOMap m = build_som(d.vector_size);
+	SOMap m = build_som(d.vector_size, d.sample_size);
 	print_node_map(&m);
 	press_enter_to_continue();
 	
-	size_t iter;
-	iter = get_iteration_count();
-	press_enter_to_continue();
 	
+	size_t iter = 5 * d.vector_size;
+	printf("Number of training cycles: %ld\n", iter);
+	set_learning_rate();
+	press_enter_to_continue();
+
 	// Get a random order to process data samples
 	//size_t *order;
 	
@@ -74,6 +78,7 @@ int main(int argc, char **argv)
 		printf("Pass: %ld\n", i+1);
 		size_t *order;
 		order = get_randomized_order(d.sample_size);
+		update_learning_rate(i, iter);
 		// Loop through samples
 		for (size_t j = 0; j < d.sample_size; j++)
 		{

@@ -24,8 +24,8 @@ void normalize_dataset(Dataset *d)
 	{
 		for (int j = 0; j < d->vector_size; j++)
 		{
-			tmp = normalize_elem(d->data[i][j], d->min_values[j], d->max_values[j]);
-			d->data[i][j] = tmp;
+			tmp = normalize_elem(d->vector[i].data[j], d->min_values[j], d->max_values[j]);
+			d->vector[i].data[j] = tmp;
 		}
 	}	
 }

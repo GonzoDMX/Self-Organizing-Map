@@ -33,9 +33,9 @@ extern Node node;
 
 extern SOMap map;
 
-SOMap build_som(size_t v_size);
+SOMap build_som(size_t v_size, size_t s_size);
 
-void get_map_dimensions(SOMap *m);
+void set_map_dimensions(SOMap *m, size_t sample_size);
 
 double *get_random_vector(size_t v_size);
 

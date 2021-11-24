@@ -15,13 +15,20 @@
 
 typedef struct
 {
+	double *data;
+	int color;
+} Vector;
+
+typedef struct
+{
 	size_t vector_size;
 	size_t sample_size;
 	double *min_values;
 	double *max_values;
-	double **data;
+	Vector *vector;
 } Dataset;
 
+extern Vector vector;
 extern Dataset data;
 
 // Checks input file path and opens dataset file
@@ -30,17 +37,20 @@ FILE *open_dataset(const char *f_path);
 // Central constructor for dataset, reads file line by line parsing vectors
 Dataset build_dataset(const char *f_path);
 
-// Take a line from file and break values into a vector
-double *parse_vector(const char *v_str, Dataset *data, int first);
+// Request index of classification column
+int get_class_column();
+
+// Get a unique key for classification
+int get_class_color(double val);
+
+// Take a line from file and break values into a vector struct
+Vector parse_vector(char *v_str, int classify);
 
 // Initializes the parameters of the dataset (vector size and min / max arrays)
-int init_data_params(const double *v, Dataset *data, size_t v_size);
+void init_data_params(Dataset *d);
 
 // Updates the Min / Max values in the Dataset struct
-void update_vector_min_max(const double *v, Dataset *data);
-
-// Appends a vector to the Dataset struct and increments sample size
-int append_vector(double *v, Dataset *data, int first);
+void update_min_max(Dataset *data);
 
 // Parses data elements from a string, for data strings we get a hash
 double parse_data_elem(const char *elem);

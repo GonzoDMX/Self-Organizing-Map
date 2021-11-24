@@ -17,26 +17,7 @@
 #include "somap_builder.h"
 #include "somap_operations.h"
 
-
-size_t get_iteration_count()
-{
-	size_t x;
-	while(1)
-	{
-		printf("\nIn how many iterations would you like to train the SOM?\n");
-		scanf("%zu", &x);
-		
-		if (x > 0)
-		{
-			getchar();
-			printf("Preparing to train the SOM for %ld iterations.\n", x);
-			break;
-		}
-		printf("\nERROR: Number of iterations must be a whole number greater than 0.\n");
-	}
-	return x;
-}
-
+static double l_rate;
 
 size_t *get_best_match_unit(Dataset *d, SOMap *m, size_t index)
 {
@@ -47,7 +28,7 @@ size_t *get_best_match_unit(Dataset *d, SOMap *m, size_t index)
 		for (size_t j = 0; j < m->x; j++)
 		{
 			Node node = m->nodes[i][j];
-			tmp = multi_dimen_euclid_distance(d->data[index], node.weights, m->v);
+			tmp = multi_dimen_euclid_distance(d->vector[index].data, node.weights, m->v);
 			if (tmp < dist)
 			{
 				dist = tmp;
@@ -90,10 +71,9 @@ void update_nodes(Dataset *d, SOMap *m, size_t index, size_t *bmu_pos, size_t t,
 			{
 				// Update Algorithm
 				size_t pos[2] = { j, i };
-				double v = d->data[index][k];
+				double v = d->vector[index].data[k];
 				double w = m->nodes[i][j].weights[k];
 				double n_func = neighborhood_func(pos, bmu_pos, (t+1), t_max);
-				double l_rate = learning_rate((t+1), t_max);
 				m->nodes[i][j].weights[k] = w + l_rate * n_func * (v - w);
 			}
 		}
@@ -104,17 +84,36 @@ void update_nodes(Dataset *d, SOMap *m, size_t index, size_t *bmu_pos, size_t t,
 double neighborhood_func(size_t *pos, size_t *bmu_pos, size_t t, size_t t_max)
 {
 	double dist = pow(get_distance(pos, bmu_pos), 2);
-	double rate = pow(learning_rate(t, t_max), 2) * 2 * t;
+	double rate = pow(l_rate, 2) * 2 * t;
 	double result = exp(-dist/rate);
 	return result;
 }
 
-// Function for calculating learning rate
-double learning_rate(size_t t, size_t t_max)
+
+// Request the starting learning rate
+void set_learning_rate()
 {
-	double t_tmp = (double)t / t_max;
-	t_tmp = exp(-t_tmp);
-	return t_tmp;
+	double r;
+	while(1)
+	{
+		printf("\nPlease enter the starting learning rate:\n");
+		scanf("%lf", &r);
+		if(r > 0 && r <= 1.0)
+		{
+			getchar();
+			printf("Learning rate set to: %lf\n", r);
+			break;
+		}
+		printf("\nERROR: Invalid learning rate.\n");
+	}
+	l_rate = r;
+}
+
+// Function for calculating learning rate
+void update_learning_rate(size_t t, size_t t_max)
+{
+	l_rate =  l_rate / (1 + t / (t_max / 2));
+	printf("Learning rate: %lf\n", l_rate);
 }
 
 double get_distance(size_t *pos, size_t *bmu_pos)
@@ -143,6 +142,6 @@ void populate_feature_map(Dataset *d, SOMap *m)
 	{
 		size_t *pos;
 		pos = get_best_match_unit(d, m, i);
-		m->nodes[pos[1]][pos[0]].color += 1;
+		m->nodes[pos[1]][pos[0]].color = d->vector[i].color;
 	}
 }
