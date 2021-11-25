@@ -12,6 +12,7 @@
 #ifndef SOMAP_OPERATIONS_H_
 #define SOMAP_OPERATIONS_H_
 
+size_t get_iteration_count(size_t v_size);
 
 size_t *get_best_match_unit(Dataset *d, SOMap *m, size_t index);
 

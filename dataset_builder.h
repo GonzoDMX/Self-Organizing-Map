@@ -31,11 +31,14 @@ typedef struct
 extern Vector vector;
 extern Dataset data;
 
-// Checks input file path and opens dataset file
-FILE *open_dataset(const char *f_path);
+// Map the incoming file to memory
+char *map_file_to_mem(const char *f_path);
 
 // Central constructor for dataset, reads file line by line parsing vectors
 Dataset build_dataset(const char *f_path);
+
+// Map the incoming file to memory
+char *map_file_to_mem(const char *f_path);
 
 // Request index of classification column
 int get_class_column();

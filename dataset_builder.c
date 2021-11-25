@@ -10,114 +10,113 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <limits.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/mman.h>
+#include <fcntl.h>
+#include <error.h>
 #include "dataset_builder.h"
 
 
 static size_t vector_size = 0;
+static long file_size = 0;
 
-
-// Check file path and then open the file
-FILE *open_dataset(const char *f_path)
-{
-	char actualpath[PATH_MAX+1];
-	// Check filepath
-	if (realpath(f_path, actualpath) == NULL)
-	{
-		return NULL;
-	}
-	
-	// Open the file
-	FILE *fp;
-	fp = fopen(actualpath, "r");
-	if (fp == NULL)
-	{
-		return NULL;
-	}
-	return fp;
-}
 
 
 // Function that builds the dataset
 Dataset build_dataset(const char *f_path)
-{
+{	
 	// Initialize Dataset Struct
 	Dataset d;
-	int classify;
+	int classify=5, first=1;;
 	d.vector_size = 0;
 	d.sample_size = 0;
 
-	// Verify file path before continuing operation
-	FILE *f;
-	f = open_dataset(f_path);
-	if (f == NULL)
-	{
-		// If NULL return empty dataset
-		return d;
-	}
-	
 	classify = get_class_column();
+
+	char *f_mem, *f_line, *save_ptr;
 	
-	// tmp holds current char from file, i is index for substring
-	// first is flag for first pass of function
-	int tmp, i=0, first=1;
-	// tmp_char holds a substring (a line) from file
-	// with .data files each line is a vector
-	char tmp_char[512];
-	int counter = 0;
+	f_mem = map_file_to_mem(f_path);
+	
 	Vector vect, *v_tmp;
 	d.vector = malloc(sizeof(Vector));
-	while (tmp = fgetc(f))
+	int count=0;
+	while(1)
 	{
-		// When we hit a linebreak build vector from substring
-		if (tmp == '\n')
+		if(count == 0)
 		{
-			// close the substring
-			tmp_char[i] = '\0';
-			// Filter out any empty strings
-			if (tmp_char[0] != '\0')
-			{
-				// get the vector as a double array from substring
-				vect = parse_vector(tmp_char, classify);
-				d.sample_size++;
-				v_tmp = (Vector*)realloc(d.vector, sizeof(Vector)*d.sample_size);
-				if(v_tmp == NULL)
-				{
-					printf("ERROR: Failed to allocate vector in Dataset");
-					exit(1);
-				}
-				else
-				{
-					d.vector = v_tmp;
-					d.vector[d.sample_size-1] = vect;
-				}
-				// If first initialize parameters
-				if(first == 1)
-				{
-					init_data_params(&d);
-					first = 0;
-				}
-				// Set Min / Max Vector Values
-				else
-				{
-					update_min_max(&d);
-				}
-			}
-			i = 0;
-		}
-		else if (tmp == EOF)
-		{
-			break;
+			f_line = strtok_r(f_mem, "\n", &save_ptr);
 		}
 		else
 		{
-			tmp_char[i] = tmp;
-			i++;
+			f_line = strtok_r(NULL, "\n", &save_ptr);
 		}
+		if(f_line == NULL)
+		{
+			break;
+		}
+		// get the vector as a double array from substring
+		vect = parse_vector(f_line, classify);
+		d.sample_size++;
+		v_tmp = (Vector*)realloc(d.vector, sizeof(Vector)*d.sample_size);
+		if(v_tmp == NULL)
+		{
+			error(1, 105, "Failed to allocate vector %ld in Dataset\n", d.sample_size);
+		}
+		else
+		{
+			d.vector = v_tmp;
+			d.vector[d.sample_size-1] = vect;
+		}
+		// If first initialize parameters
+		if(first == 1)
+		{
+			init_data_params(&d);
+			first = 0;
+		}
+		// Set Min / Max Vector Values
+		else
+		{
+			update_min_max(&d);
+		}
+		count++;
 	}
-	fclose(f);
+	munmap(f_mem, file_size);
 	return d;
+}
+
+
+// Map the incoming Dataset file to memory, and test if successful
+char *map_file_to_mem(const char *f_path)
+{
+	char *f_mem;
+	char actual_path[PATH_MAX+1];
+	
+	if(realpath(f_path, actual_path) == NULL)
+	{
+		error(1, 2, "Failed to locate file %s\n", f_path);
+	}
+	
+	int fp = open(actual_path, O_RDWR, S_IRUSR | S_IWUSR);
+	struct stat sp;
+
+	if(fstat(fp, &sp) == -1)
+	{
+		error(1, 2, "Failed to open dataset at location: %s\n", f_path);
+	}
+	// Set file size
+	file_size = sp.st_size;
+	
+	f_mem = mmap(NULL, sp.st_size, PROT_READ|PROT_WRITE, MAP_PRIVATE, fp, 0);
+	if(f_mem == MAP_FAILED)
+	{
+		error(1, 12, "Failed to map file to memory\n");
+	}
+	close(fp);
+	return f_mem;
 }
 
 
@@ -168,6 +167,7 @@ int get_class_color(double val)
 }
 
 
+// Parse an individual Data Vector
 Vector parse_vector(char *v_str, int classify)
 {
 	Vector vect;
@@ -203,8 +203,7 @@ Vector parse_vector(char *v_str, int classify)
 			v_tmp = realloc(v, sizeof(double)*count+1);
 			if(v_tmp == NULL)
 			{
-				printf("ERROR: Failed to realloc vector data\n");
-				exit(1);
+				error(1, 105, "Failed to realloc vector data\n");
 			}
 			v = v_tmp;
 			v[count-mod] = tmp;
@@ -213,8 +212,7 @@ Vector parse_vector(char *v_str, int classify)
 	}
 	if(count == 0)
 	{
-		printf("ERROR: No data in vector\n");
-		exit(1);
+		error(1, 61, "No data in vector\n");
 	}
 	// Set data vector data values here
 	vect.data = v;
@@ -223,26 +221,18 @@ Vector parse_vector(char *v_str, int classify)
 	if(vector_size == 0)
 	{
 		vector_size = count-1;
+		if(classify > vector_size)
+		{
+			error(1, 22, "Classification column index out of range\n");
+		}
 	}
 	if(vector_size != count-1)
 	{
-		printf("ERROR: Not all data is the same size");
-		exit(1);
+		error(1, 84, "Cannot process vectors of mixed size\n");
 	}
-	/*
-	printf("--Test Vector--\n");
-	printf("Data: | ");
-	for(int i = 0; i < vector_size; i++)
-	{
-		printf("%lf | ", vect.data[i]);
-	}
-	printf("\n");
-	printf("Color: %d\n", vect.color);
-	*/
 	return vect;
 }
 
-		
 
 // Build params for vector size, min and max values (used later for normalization)
 void init_data_params(Dataset *d)
@@ -255,8 +245,7 @@ void init_data_params(Dataset *d)
 		// Check that memory is properly allocated
 		free(d->min_values);
 		free(d->max_values);
-		printf("ERROR: Failed to allocate Min/Max Vectors\n");
-		exit(1);
+		error(1, 12, "Failed to allocate Min/Max Vectors\n");
 	}
 	for (int i = 0; i < d->vector_size; i++)
 	{
@@ -282,7 +271,6 @@ void update_min_max(Dataset *d)
 		}
 	}
 }
-
 
 
 // Parse data elements from dataset
@@ -311,6 +299,7 @@ double parse_data_elem(const char *elem)
 		return val;
 	}
 }
+
 
 // Very basic attempt at seperating unique strings
 // Will handle simple cases like paramutations

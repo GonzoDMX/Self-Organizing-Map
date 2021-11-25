@@ -45,15 +45,16 @@ int main(int argc, char **argv)
 	print_dataset(&d);
 	press_enter_to_continue();
 	
+	// TODO Allow user to set dimensions of matrix, if no default to built in value
 	
 	// Build a Node Map Initialized to random values
 	SOMap m = build_som(d.vector_size, d.sample_size);
+	press_enter_to_continue();
 	print_node_map(&m);
 	press_enter_to_continue();
 	
 	
-	size_t iter = 5 * d.vector_size;
-	printf("Number of training cycles: %ld\n", iter);
+	size_t iter = get_iteration_count(d.vector_size);
 	set_learning_rate();
 	press_enter_to_continue();
 
