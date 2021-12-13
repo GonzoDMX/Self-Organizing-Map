@@ -11,9 +11,9 @@
 
 
 #include <stdio.h>
-#include "dataset_builder.h"
-#include "somap_builder.h"
-#include "test_functions.h"
+#include "include/dataset_builder.h"
+#include "include/somap_builder.h"
+#include "include/test_functions.h"
 
 
 void print_dataset(Dataset *d)
@@ -21,12 +21,7 @@ void print_dataset(Dataset *d)
 	printf("\nDataset values: \n");
 	for (int i = 0; i < d->sample_size; i++)
 	{
-		if ((i+1) > 99999) 	  { printf("%d: | ", i+1);		}
-		else if ((i+1) > 9999){ printf(" %d: | ", i+1);     }
-		else if ((i+1) > 999) { printf("  %d: | ", i+1);    }
-		else if ((i+1) > 99)  { printf("   %d: | ", i+1);   }
-		else if ((i+1) > 9)   { printf("    %d: | ", i+1);  }
-		else 				  { printf("     %d: | ", i+1); }
+		printf("%-5d: | ", i+1);
 		for (int j = 0; j < d->vector_size; j++)
 		{
 			printf("%lf | ", d->vector[i].data[j]);
@@ -70,6 +65,17 @@ void print_max_values(Dataset *d)
 	printf("\n");
 }
 
+
+void print_avg_values(Dataset *d)
+{
+	printf("\nVector Avg Values: | ");
+	for (int i = 0; i < d->vector_size; i++)
+	{
+		printf("%lf | ", d->avg_values[i]);
+	}
+	printf("\n");
+}
+
 void print_node_map(SOMap *m)
 {
 	printf("\nNode Map:\n");
@@ -96,12 +102,7 @@ void print_size_t_array(size_t *o, size_t s)
 	for (size_t i = 0; i < s; i++)
 	{
 		if (count == 0) { printf("| "); }
-		if (o[i] > 99999) 	{ printf("%ld| ", o[i]);	 }
-		else if(o[i] > 9999){ printf("%ld | ", o[i]);	 }
-		else if(o[i] > 999)	{ printf("%ld  | ", o[i]);   }
-		else if(o[i] > 99) 	{ printf("%ld   | ", o[i]);  }
-		else if(o[i] > 9) 	{ printf("%ld    | ", o[i]); }
-		else 				{ printf("%ld     | ", o[i]);}
+		else { printf("%-5ld | ", o[i]); }
 		count++;
 		if (count == 10)
 		{
@@ -120,10 +121,25 @@ void print_feature_map(SOMap *m)
 		printf(" | ");
 		for (size_t j = 0; j < m->x; j++)
 		{
-			size_t tmp = m->nodes[i][j].color;
-			if (tmp > 99) 		{ printf("%ld | ", tmp);  }
-			else if (tmp > 9) 	{ printf(" %ld | ", tmp); }
-			else 				{ printf("  %ld | ", tmp);}
+			printf(" %-2d |", m->nodes[i][j].ett);
+		}
+		printf("\n");
+	}
+}
+
+void print_avg_map(SOMap *m)
+{
+	for (size_t i = 0; i < m->y; i++)
+	{
+		printf(" | ");
+		for (size_t j = 0; j < m->x; j++)
+		{
+			double tmp = (m->nodes[i][j].weights[0] +
+						 m->nodes[i][j].weights[1] +
+						 m->nodes[i][j].weights[2] +
+						 m->nodes[i][j].weights[3]) / 4;
+			printf(" %-2lf ", tmp);
+			printf(" |");
 		}
 		printf("\n");
 	}
@@ -139,3 +155,11 @@ void press_enter_to_continue()
 		enter = getchar(); 
 	}
 }
+
+
+
+
+
+
+
+

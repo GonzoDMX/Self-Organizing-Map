@@ -18,7 +18,7 @@
 #include <sys/mman.h>
 #include <fcntl.h>
 #include <error.h>
-#include "dataset_builder.h"
+#include "include/dataset_builder.h"
 
 
 static size_t vector_size = 0;
@@ -31,7 +31,7 @@ Dataset build_dataset(const char *f_path)
 {	
 	// Initialize Dataset Struct
 	Dataset d;
-	int classify=5, first=1;;
+	int classify=5, first=1;
 	d.vector_size = 0;
 	d.sample_size = 0;
 
@@ -134,7 +134,8 @@ int get_class_column()
 			printf("Column %d is designated for classification.\n", col);
 			break;
 		}
-		printf("\nERROR: Invalid column index.\n");
+		printf("\nERROR:\tInvalid column index.\n");
+		printf("Hint:\tColumns are indexed starting with 1\n");
 	}
 	return col-1;
 }
@@ -240,7 +241,8 @@ void init_data_params(Dataset *d)
 	d->vector_size = vector_size;
 	d->min_values = (double*)malloc(sizeof(double) * d->vector_size);
 	d->max_values = (double*)malloc(sizeof(double) * d->vector_size);
-	if (d->min_values == NULL || d->max_values == NULL)
+	d->avg_values = (double*)calloc(d->vector_size, sizeof(double));
+	if (d->min_values == NULL || d->max_values == NULL || d->avg_values == NULL)
 	{
 		// Check that memory is properly allocated
 		free(d->min_values);
@@ -280,7 +282,7 @@ double parse_data_elem(const char *elem)
 {
 	char *end_ptr;
 	double val = strtod(elem, &end_ptr);
-	int sum=0, index=0;
+	int index=0;
 	if (val > 0)
 	{
 		return val;
@@ -301,10 +303,10 @@ double parse_data_elem(const char *elem)
 }
 
 
-// Very basic attempt at seperating unique strings
-// Will handle simple cases like paramutations
-// But in large sets of unique strings expect some collisions
-static int dumbHash(const char *str)
+// Basic (naive?) attempt at seperating unique strings
+// Will handle simple cases like paramutations of the same letters
+// In large sets of unique strings there might be collisions
+int dumbHash(const char *str)
 {
 	int hash = 0;
 	while (*str != '\0')

@@ -19,6 +19,8 @@ double normalize_elem(double elem, double min_elem, double max_elem);
 
 size_t *get_randomized_order(size_t s);
 
+size_t *get_randomized_list(size_t s);
+
 size_t get_random_sample(size_t s);
 
 

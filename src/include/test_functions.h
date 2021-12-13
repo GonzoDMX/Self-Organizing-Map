@@ -12,7 +12,6 @@
 #define TEST_FUNCTIONS_H_
 
 
-
 void print_dataset(Dataset *d);
 
 void print_sample_size(Dataset *d);
@@ -23,12 +22,17 @@ void print_min_values(Dataset *d);
 
 void print_max_values(Dataset *d);
 
+void print_avg_values(Dataset *d);
+
 void print_node_map(SOMap *m);
 
 void print_size_t_array(size_t *o, size_t s);
 
 void print_feature_map(SOMap *m);
 
+void print_avg_map(SOMap *m);
+
 void press_enter_to_continue();
+
 
 #endif

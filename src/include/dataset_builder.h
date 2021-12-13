@@ -15,18 +15,27 @@
 
 typedef struct
 {
+	// Data values
 	double *data;
+	// Data ettiquette
 	int color;
 } Vector;
 
 typedef struct
 {
+	// Individual data vector size
 	size_t vector_size;
+	// Number of samples in dataset
 	size_t sample_size;
+	// Min and max values for each sample in dataset
 	double *min_values;
 	double *max_values;
+	// Avg normalized value for each vector element
+	double *avg_values;
+	// Array of data vectors
 	Vector *vector;
 } Dataset;
+
 
 extern Vector vector;
 extern Dataset data;
@@ -59,7 +68,7 @@ void update_min_max(Dataset *data);
 double parse_data_elem(const char *elem);
 
 // A simplistic hash function to create unique values representing strings
-static int dumbHash(const char *str);
+int dumbHash(const char *str);
 
 
 #endif // DATASET_BUILDER_H_
