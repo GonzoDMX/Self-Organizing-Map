@@ -13,4 +13,7 @@ make
 ```
 
 ### Note:
-The feature maps created by this program are simply a distribution of Best Match Units displayed in a table. The node of the Best Match Unit is incremented for each vector in the Dataset that matches with it.
+To visualize the SOM the following dependencies are required: Python3, Pandas, matplotlib and seaborn
+
+#### Datasets:
+Datasets are not included with this repository. You can find datasets at the [UCI Machine Learning Repository](https://archive.ics.uci.edu), I reccomend iris, wine and abalone as agood starting point for tests.

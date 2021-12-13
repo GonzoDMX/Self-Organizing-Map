@@ -152,18 +152,25 @@ int main(int argc, char **argv)
 	free(m.nodes);
 	
 	
-	
+	// Run visualization and handle errors
 	int system_check = system("python visualize_csv.py");
+	if(system_check == 40704)
+	{
+		system_check = system("python3 visualize_csv.py");
+	}
 	printf("System closed with status: %d\n\n", system_check);
 	if(system_check == 32512)
 	{
-		printf("Hint:\tYou must install Python 3 in order to visualize the SOMap.\n");
+		printf("Hint:\tYou must install Python3 in order to visualize the SOMap.\n");
+		return 0;
 	}
-	if(system_check == 512)
+	else if(system_check == 512)
 	{
 		printf("Hint:\tDid you move or modify the 'visualize_csv.py' script?\n");
 		printf("\tIt must be located in the same directory as the 'somap' executable.\n");
+		return 0;
 	}
+	return 0;
 }
 
 

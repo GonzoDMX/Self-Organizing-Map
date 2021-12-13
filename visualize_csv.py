@@ -6,48 +6,56 @@
 	Date: 21 Nov, 2021
 """
 
+def visualize():
+	try:
+		import pandas as pd
+		import matplotlib.pyplot as plt
+		import seaborn as sns
+		import re
+		import sys
 
-try:
-	import pandas as pd
-	import numpy as np
-	import matplotlib.pyplot as plt
-	import seaborn as sns
-	import re
+		# Make sure we're using Python3
+		pyVersion = sys.version_info[0]
+
+		if pyVersion != 3:
+			sys.exit(99999)
+
+		subdir = "csv/"
+
+		path_to_csv_pre= subdir + "outpre.csv"
+		df1= pd.read_csv(path_to_csv_pre ,index_col=0)
+
+		path_to_csv= subdir + "output.csv"
+		df2= pd.read_csv(path_to_csv ,index_col=0)
+
+		path_to_csv_pett= subdir + "pre_ettiquette.csv"
+		df3= pd.read_csv(path_to_csv_pett ,index_col=0)
+
+		path_to_csv_ett= subdir + "ettiquette.csv"
+		df4= pd.read_csv(path_to_csv_ett ,index_col=0)
 
 
-	subdir = "csv/"
+		plot1 = plt.figure("Random_Avgerages")
+		sns.heatmap(df1, cmap="jet", linewidths=0.5, vmin=0, vmax=1)
 
-	path_to_csv_pre= subdir + "outpre.csv"
-	df1= pd.read_csv(path_to_csv_pre ,index_col=0)
+		plot2 = plt.figure("Trained_Averages")
+		sns.heatmap(df2, cmap="jet", linewidths=0.5, vmin=0, vmax=1)
 
-	path_to_csv= subdir + "output.csv"
-	df2= pd.read_csv(path_to_csv ,index_col=0)
+		plot3 = plt.figure("Random_Ettiquette")
+		sns.heatmap(df3, cmap="jet", linewidths=0.5, vmin=0, vmax=3)
 
-	path_to_csv_pett= subdir + "pre_ettiquette.csv"
-	df3= pd.read_csv(path_to_csv_pett ,index_col=0)
+		plot4 = plt.figure("Trained_Ettiquette")
+		sns.heatmap(df4, cmap="jet", linewidths=0.5, vmin=0, vmax=3)
 
-	path_to_csv_ett= subdir + "ettiquette.csv"
-	df4= pd.read_csv(path_to_csv_ett ,index_col=0)
+		plt.show()
 
-
-	plot1 = plt.figure("Random_Avgerages")
-	sns.heatmap(df1, cmap="jet", linewidths=0.5, vmin=0, vmax=1)
-
-	plot2 = plt.figure("Trained_Averages")
-	sns.heatmap(df2, cmap="jet", linewidths=0.5, vmin=0, vmax=1)
-
-	plot3 = plt.figure("Random_Ettiquette")
-	sns.heatmap(df3, cmap="jet", linewidths=0.5, vmin=0, vmax=3)
-
-	plot4 = plt.figure("Trained_Ettiquette")
-	sns.heatmap(df4, cmap="jet", linewidths=0.5, vmin=0, vmax=3)
-
-	plt.show()
-
-except ModuleNotFoundError as e:
-	m = re.findall(r"'(.*?)'", str(e), re.DOTALL)
-	print(e)
-	print("Hint:\tYou must install the python module " + str(m) + " to visualize the SOMap.\n")
+	except ModuleNotFoundError as e:
+		m = re.findall(r"'(.*?)'", str(e), re.DOTALL)
+		print(e)
+		print("Hint:\tYou must install the python module " + str(m) + " to visualize the SOMap.\n")
+		
+	except Exception as e:
+		print(e)
 	
-except Exception as e:
-	print(e)
+if __name__ == "__main__":
+	visualize()

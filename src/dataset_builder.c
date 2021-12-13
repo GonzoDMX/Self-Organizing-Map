@@ -127,6 +127,7 @@ int get_class_column()
 	while(1)
 	{
 		printf("\nWhich column in the dataset is designated for classification?\n");
+		printf("Attn:\tDataset columns are not zero-indexed,\n\tEx. Enter 1 for the first column\n");
 		scanf("%d", &col);
 		if(col > 0)
 		{

@@ -117,6 +117,7 @@ double get_learning_rate()
 	{
 		printf("\nPlease enter the starting learning rate:\n");
 		printf("Hint:\tMust be a value between 0.0 and 1.0\n");
+		printf("\t0.3 is generally a good starting value\n");
 		scanf("%lf", &r);
 		if(r > 0 && r <= 1.0)
 		{
@@ -137,7 +138,7 @@ double get_learning_delay()
 	while(1)
 	{
 		printf("\nPlease enter the learning rate delay (0 = Default, 0.1 = Max):\n");
-		printf("Hint: Values approaching 0 prodduce a more linear decay (default = 0.0001)\n");
+		printf("Hint:\tValues approaching 0 prodduce a linear decay (default = 0.0001)\n");
 		printf("\tAs the value increases the delay goes exponential (0.1 = Max)\n");
 		scanf("%lf", &r);
 		if(r > 0.0 && r <= 0.1)
