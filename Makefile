@@ -3,6 +3,7 @@ LIBS=-lm
 SDIR=src
 IDIR=src/include
 ODIR=src/obj
+CDIR=csv
 
 CFLAGS=-I.$(IDIR) -Wall
 
@@ -27,6 +28,7 @@ OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 # Compiles each of the object files as separate targets
 $(ODIR)/%.o: $(SDIR)/%.c
+	@mkdir -p $(ODIR) $(CDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 # -o $@ -> Tells make to put the output in a file named after the target
