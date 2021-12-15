@@ -98,18 +98,25 @@ int main(int argc, char **argv)
 		// Set the learning rate
 		double l_rate = set_learning_rate(learning_rate, learning_delay, t, iterations);
 		
-		// Get randomized order of data for this epoch
-		int rand_index = get_random_sample(d.sample_size);
-		
 		// Set neighborhood size over time
 		double neighborhood = set_neighborhood_size(map_radius, t, time_constant);
 
-		// Find the Best Match Unit		
-		Node *bmu_node;
-		bmu_node = get_best_match_unit(d.vector[rand_index].data, &m);
+		// Get randomized order of data for this epoch
+		size_t *order;
+		order = get_randomized_list(d.sample_size);
+		// Get randomized order of data for this epoch
+		// int rand_index = get_random_sample(d.sample_size);
+		
+		// Enter training loop
+		for(size_t s = 0; s < d.sample_size; s++)
+		{
+			// Find the Best Match Unit		
+			Node *bmu_node;
+			bmu_node = get_best_match_unit(d.vector[order[s]].data, &m);
 			
-		// printf("BMU, Pos X: %ld | Pos Y: %ld\n", bmu_node->x, bmu_node->y);
-		update_nodes(d.vector[rand_index].data, bmu_node, l_rate, neighborhood, &m);
+			// printf("BMU, Pos X: %ld | Pos Y: %ld\n", bmu_node->x, bmu_node->y);
+			update_nodes(d.vector[order[s]].data, bmu_node, l_rate, neighborhood, &m);
+		}
 	}
 	
 	
