@@ -15,6 +15,7 @@
 #include "include/dataset_builder.h"
 #include "include/somap_builder.h"
 #include "include/training.h"
+#include "include/visualize.h"
 
 
 // Set the map radius, used for calculating the neighborhood size
@@ -43,12 +44,10 @@ double set_learning_rate(double l, double delay, size_t t, size_t t_max)
 	}
 	else
 	{
-		//l_rate =  l / (1 + t / (t_max / 2));
-		//l_rate = l * exp(-(double)t/t_max);
-		
-		// Taken from Tensorflow Docs
+		// This method for calculating learning rate was Adapted 
+		// from Tensorflow Docs I prefer to use the delay as it 
+		// allows an additional training parameter for test purposes
 		l_rate = l * (1 / (1 + delay * t));
-		printf("Learning rate: %lf\n", l_rate);
 	}
 	return l_rate;
 }
@@ -74,21 +73,36 @@ Node *get_best_match_unit(double *target, SOMap *m)
 		{
 			//double *prob = get_random_vector(1);
 			double *weights;
-			//if(prob[0] > 0.5)
-			//{
-				weights = m->nodes[i][j].weights;
-				tmp = multi_dimen_euclid_distance(target, weights, m->v);
-				if (tmp < dist)
+			weights = m->nodes[i][j].weights;
+			tmp = multi_dimen_euclid_distance(target, weights, m->v);
+			if (tmp < dist)
+			{
+				dist = tmp;
+				bmu_node = &m->nodes[i][j];
+			}
+			else if (double_equals(tmp, dist))
+			{
+				if(get_random_val() == 1)
 				{
-					dist = tmp;
 					bmu_node = &m->nodes[i][j];
 				}
-			//}
+			}
 		}
 	}
 	return bmu_node;
 }
 
+
+// Used to grab random BMU
+int get_random_val()
+{
+	int val = (rand() / (RAND_MAX / 100 + 1));
+	if(val > 50)
+	{
+		return 1;
+	}
+	return 0;
+}
 
 
 // Given two n-dimensional vectors, find the euclidean distance between them
@@ -124,13 +138,14 @@ double get_influence_rate(double distanceSq, double neighborSq)
 // Traverse the SOMap node detwork and update activated nodes
 void update_nodes(double *target, Node *bmu, double learning_rate, double neighborhood, SOMap *m)
 {
-	double neighborSq = pow(neighborhood, 2);
+	double neighborSq = (neighborhood * neighborhood);
 	for(int i = 0; i < m->y; i++)
 	{
 		for(int j = 0; j < m->x; j++)
 		{
 			// Calculate distance between node and BMU
 			double distSq = get_squared_distance(m->nodes[i][j].x, m->nodes[i][j].y, bmu->x, bmu->y);
+			
 			// If the node is in the neighborhood update its weights
 			if(distSq < neighborSq)
 			{

@@ -42,10 +42,10 @@ double normalize_elem(double elem, double min_elem, double max_elem)
 }
 
 
+// Returns a randomized list of indexes from 0 to S
 size_t *get_randomized_order(size_t s)
 {
 	size_t *order, *r_order, tmp;
-	// Seed the random function
 	// Allocate mem for our two arrays
 	order = (size_t*)malloc(sizeof(size_t) * s);
 	r_order = (size_t*)malloc(sizeof(size_t) * s);

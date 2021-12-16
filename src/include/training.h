@@ -26,6 +26,9 @@ double set_neighborhood_size(double map_radius, int t, double time_constant);
 // Find the best match unit for the given input vector
 Node *get_best_match_unit(double *target, SOMap *m);
 
+// Used to grab random BMU
+int get_random_val();
+
 // Given two n-dimensional vectors, find the euclidean distance between them
 double multi_dimen_euclid_distance(const double *v_one, const double *v_two, size_t n_dimens);
 
