@@ -68,8 +68,8 @@ void get_all_match_unit(double *target, SOMap *m, int color)
 double get_distance(size_t *pos, size_t *bmu_pos)
 {
 	double x_val, y_val;
-	x_val = pow((double)(pos[0] - bmu_pos[0]), 2);
-	y_val = pow((double)(pos[1] - bmu_pos[1]), 2);
+	x_val = (double)((pos[0] - bmu_pos[0]) * (pos[0] - bmu_pos[0]));
+	y_val = (double)((pos[1] - bmu_pos[1]) * (pos[1] - bmu_pos[1]));
 	return sqrt(x_val + y_val);
 }
 
