@@ -21,8 +21,7 @@ To visualize the SOM the following dependencies are required: Python3, Pandas, m
 Datasets are not included with this repository. You can find datasets at the [UCI Machine Learning Repository](https://archive.ics.uci.edu), I reccomend iris, wine and abalone as agood starting point for tests.
 
 #### Comment exécuter le programme pour l'évaluation
-Optionnel. Installer les dépendances :
-Utilisez votre gestionnaire de paquets pour installer Python 3, matplotlib, Pandas et Seaborn.
+Installer les dépendances : Python 3, matplotlib, Pandas et Seaborn.
 1. Compiler le programme :
 ```
 git clone https://github.com/GonzoDMX/Self-Organizing-Map.git
