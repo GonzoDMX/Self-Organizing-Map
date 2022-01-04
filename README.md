@@ -43,8 +43,8 @@ curl https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data -o
 	- Entrer **0.7**, pour fixer le 'learning rate'
 	- Entrer **0**,   pour sélectionner le delai par défaut (une courbe qui s'applique au 'learning rate')
 5. Analyser les résultats :</br>
-Dans l'affichage du terminal.
-- Inactif         = 0
+- Dans l'affichage du terminal.
+	- Inactif         = 0
 - Iris-setosa     = 1
 - Iris-versicolor = 2
 - Iris-virginica  = 3</br>
