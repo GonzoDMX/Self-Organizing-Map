@@ -47,7 +47,7 @@ Dans l'affichage du terminal.
 - Inactif         = 0
 - Iris-setosa     = 1
 - Iris-versicolor = 2
-- Iris-virginica  = 3
+- Iris-virginica  = 3</br>
 Dans la représentation de la carte thermique.
 - Inactif         = bleu foncé
 - Iris-setosa     = bleu claire
