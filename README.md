@@ -21,7 +21,7 @@ The debug mode will display the values for each operation as the program progres
 ```
 ./somap <PATH_TO_DATASET> -D
 ```
-##### Verbose Mode:
+#### Verbose Mode:
 Verbose mode displays information related to the training phase of the self-organizing map. Launch the program with the following flag for verbose mode:
 ```
 ./somap <PATH_TO_DATASET> -V
