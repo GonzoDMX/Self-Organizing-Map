@@ -27,10 +27,10 @@ Verbose mode displays information related to the training phase of the self-orga
 ./somap <PATH_TO_DATASET> -V
 ```
 
-###### Datasets:
+## Datasets:
 Datasets are not included with this repository. You can find datasets at the [UCI Machine Learning Repository](https://archive.ics.uci.edu), I reccomend iris, wine and abalone as agood starting point for tests.
 
-####### Comment exécuter le programme pour l'évaluation
+## Comment exécuter le programme pour l'évaluation
 Installer les dépendances : Python 3, matplotlib, Pandas et Seaborn.
 1. Compiler le programme :
 ```
