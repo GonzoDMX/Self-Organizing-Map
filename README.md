@@ -15,20 +15,22 @@ make
 ```
 
 ### Note:
-To visualize the SOM the following dependencies are required: Python3, Pandas, matplotlib and seaborn.</br>I have also added optional flags to display each process of the algorithm.</br>
-**Debug Mode:**</br>The debug mode will display the values for each operation as the program progresses.</br>Launch the program with the following flag for debug mode:
+To visualize the SOM the following dependencies are required: Python3, Pandas, matplotlib and seaborn.
+#### Debug Mode:
+The debug mode will display the values for each operation as the program progresses. Launch the program with the following flag for debug mode:
 ```
 ./somap <PATH_TO_DATASET> -D
 ```
-**Verbose Mode:**</br>Verbose mode displays information related to the training phase of the self-organizing map.</br>Launch the program with the following flag for verbose mode:
+##### Verbose Mode:
+Verbose mode displays information related to the training phase of the self-organizing map. Launch the program with the following flag for verbose mode:
 ```
 ./somap <PATH_TO_DATASET> -V
 ```
 
-#### Datasets:
+###### Datasets:
 Datasets are not included with this repository. You can find datasets at the [UCI Machine Learning Repository](https://archive.ics.uci.edu), I reccomend iris, wine and abalone as agood starting point for tests.
 
-##### Comment exécuter le programme pour l'évaluation
+####### Comment exécuter le programme pour l'évaluation
 Installer les dépendances : Python 3, matplotlib, Pandas et Seaborn.
 1. Compiler le programme :
 ```
