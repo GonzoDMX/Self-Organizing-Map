@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 	if (argc < 2)
 	{
 		printf("\nHint: You need to provide a path to a dataset as argument.\n");
-		printf("\nUsage: %s <DATASET_PATH>\n\n", argv[0]);
+		printf("\nUsage: ./%s <DATASET_PATH>\n\n", argv[0]);
 		exit(1);
 	}
 	else if(argc == 3)
